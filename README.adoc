@@ -1,0 +1,34 @@
+A very simple Gradle plugin to automatically download and install https://antora.org[Antora].
+
+= Usage
+
+The first step is to apply the Gradle plugin.
+
+.build.gradle
+[source,groovy]
+----
+plugins {
+  id "io.github.rwinch.antora" version "0.0.1"
+}
+----
+
+The next step is to run the antora task:
+
+[source,bash]
+----
+./gradlew antora
+----
+
+= Sample
+
+For a complete sample refer to https://github.com/rwinch/antora-gradle
+
+= Roadmap
+
+Currently it only installs antora and runs `antora site.yml` with no additional options.
+We plan to provide additional features in future releases.
+If you have a feature request, please create a ticket.
+
+= License
+
+This project is Open Source software released under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache 2.0 license].
