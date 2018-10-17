@@ -1,0 +1,42 @@
+plugins {
+	id 'java-gradle-plugin'
+	id 'maven-publish'
+	id 'com.gradle.plugin-publish' version '0.10.0'
+}
+
+group 'io.github.rwinch.antora'
+description = 'Uses com.moowork.gradle:gradle-node-plugin to automatically install Antora and run it'
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "https://plugins.gradle.org/m2/" }
+}
+
+dependencies {
+	compile gradleApi()
+	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+
+	testCompile 'com.netflix.nebula:nebula-test:latest.release'
+	testCompile 'junit:junit:4.12'
+}
+
+
+pluginBundle {
+	website = 'https://github.com/rwinch/antora-gradle-plugin'
+	vcsUrl = 'https://github.com/rwinch/antora-gradle-plugin.git'
+	description = project.description
+	tags = ['antora', 'asciidoctor', 'asciidoc']
+}
+
+gradlePlugin {
+	plugins {
+		antoraPlugin {
+			id = 'io.github.rwinch.antora'
+			displayName = 'Antora Plugin'
+			description = project.description
+			implementationClass = 'io.github.rwinch.antora.AntoraPlugin'
+		}
+	}
+}
