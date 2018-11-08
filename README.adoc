@@ -1,4 +1,4 @@
-A very simple Gradle plugin to automatically download and install https://antora.org[Antora].
+A very simple Gradle plugin to automatically download and install https://antora.org[Antora], a documentation site generator capable of aggregating content from multiple repositories.
 
 = Usage
 
