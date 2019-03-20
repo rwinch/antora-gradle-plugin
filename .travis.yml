@@ -1,0 +1,21 @@
+language: java
+
+sudo: required
+
+dist: trusty
+
+install: true
+
+cache:
+    directories:
+        - $HOME/.m2
+        - $HOME/.gradle
+
+before_script:
+    - ./gradlew --version
+
+script:
+    - TERM=dumb ./gradlew build --scan
+
+jdk:
+    - oraclejdk8
