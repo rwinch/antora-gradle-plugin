@@ -19,6 +19,33 @@ The next step is to run the antora task:
 ./gradlew antora
 ----
 
+= Snapshots
+
+The plugin does not currently deploy SNAPSHOTs.
+To use the latest snapshot:
+
+* Clone the repository and remember the location.
+  We will refer to that location as `$AGP_HOME`.
+* In the project that uses `antora-gradle-plugin`
+** Update to use the latest Gradle version
+** Update the version to match the `version` in `gradle.properties`.
+  For example, to run `0.0.2-SNAPSHOT` use the following.
++
+.build.gradle
+[source,groovy]
+----
+plugins {
+  id "io.github.rwinch.antora" version "0.0.2-SNAPSHOT"
+}
+----
+** Execute the build as a https://docs.gradle.org/current/userguide/composite_builds.html[composite build].
+  For example:
++
+[source,bash]
+----
+./gradlew antora --include-build $AGP_HOME
+----
+
 = Sample
 
 For a complete sample refer to https://github.com/rwinch/antora-gradle
