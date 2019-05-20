@@ -11,7 +11,7 @@ buildScan {
 }
 
 group 'io.github.rwinch.antora'
-description = 'Uses com.moowork.gradle:gradle-node-plugin to automatically install Antora and run it'
+description = 'Uses com.github.node-gradle.node to automatically install Antora and run it'
 
 sourceCompatibility = 1.8
 
@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
 	compile gradleApi()
-	compile 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+	compile 'com.github.node-gradle:gradle-node-plugin:1.4.0'
 
 	testCompile 'com.netflix.nebula:nebula-test:latest.release'
 	testCompile 'junit:junit:4.12'
