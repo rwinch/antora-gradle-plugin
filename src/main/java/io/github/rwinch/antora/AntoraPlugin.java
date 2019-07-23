@@ -23,6 +23,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.tasks.Exec;
+import org.gradle.internal.os.OperatingSystem;
 
 import java.io.File;
 import java.util.Arrays;
@@ -55,6 +56,11 @@ public class AntoraPlugin implements Plugin<Project> {
 		antora.setGroup("Docs");
 		antora.setDescription("Installs and runs antora site.yml");
 		antora.dependsOn(downloadAntora);
-		antora.setCommandLine("build/modules/node_modules/@antora/cli/bin/antora", "site.yml");
+		antora.setCommandLine(antoraCommand(), "site.yml");
+	}
+
+	private String antoraCommand() {
+		String command = "build/modules/node_modules/.bin/antora";
+		return OperatingSystem.current().isWindows() ? command + ".cmd" : command;
 	}
 }
