@@ -65,7 +65,7 @@ public class AntoraPlugin implements Plugin<Project> {
 
 		project.getTasks().register(DEFAULT_ANTORA_TASK_NAME, NpxTask.class, a -> {
 			a.getCommand().set(ANTORA_CLI_PACKAGE_NAME);
-			a.getArgs().set(Arrays.asList( "site.yml"));
+			a.getArgs().set(Arrays.asList( project.file("antora-playbook.yml").getPath()));
 			a.dependsOn(downloadAntoraSiteGenerator);
 		});
 	}
