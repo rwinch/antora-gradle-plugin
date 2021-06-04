@@ -16,12 +16,14 @@
 
 package io.github.rwinch.antora;
 
-import com.moowork.gradle.node.NodeExtension;
-import com.moowork.gradle.node.NodePlugin;
-import com.moowork.gradle.node.npm.NpmTask;
+import com.github.gradle.node.NodeExtension;
+import com.github.gradle.node.NodePlugin;
+import com.github.gradle.node.npm.task.NpmTask;
+import com.github.gradle.node.npm.task.NpxTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.tasks.TaskProvider;
 import org.gradle.internal.os.OperatingSystem;
 
 import java.io.File;
@@ -33,8 +35,6 @@ import java.util.Arrays;
 public class AntoraPlugin implements Plugin<Project> {
 
 	public static final String DOWNLOAD_ANTORA_TASK_NAME = "downloadAntora";
-
-	private static final String DOWNLOAD_ANTORA_CLI_TASK_NAME = "downloadAntoraCli";
 
 	private static final String DOWNLOAD_ANTORA_GENERATOR_TASK_NAME = "downloadAntoraSiteGenerator";
 
@@ -55,58 +55,19 @@ public class AntoraPlugin implements Plugin<Project> {
 		project.getPlugins().apply(NodePlugin.class);
 
 		NodeExtension node = NodeExtension.get(project);
-		node.setDownload(true);
-		node.setVersion("8.11.4");
-		final File nodeModulesDir = project.file(new File(project.getBuildDir(), "/modules"));
-		node.setNodeModulesDir(nodeModulesDir);
+		node.getDownload().set(true);
+//		node.getVersion().set("12.16.2");
 
-		registerSetupTasks();
+		TaskProvider<NpmTask> downloadAntoraSiteGenerator = project.getTasks()
+			.register(DOWNLOAD_ANTORA_GENERATOR_TASK_NAME, NpmTask.class, npm -> {
+				npm.getArgs().set(Arrays.asList(INSTALL, ANTORA_GENERATOR_PACKAGE_NAME));
+			});
 
-		registerDefaultTasks();
-
-		registerAntoraVersionOverrideHandler();
-	}
-
-	private void registerSetupTasks() {
-		NpmTask downloadAntoraCli = project.getTasks()
-				.create(DOWNLOAD_ANTORA_CLI_TASK_NAME, NpmTask.class);
-		downloadAntoraCli.setArgs(Arrays.asList(INSTALL, ANTORA_CLI_PACKAGE_NAME));
-
-		NpmTask downloadAntoraSiteGenerator = project.getTasks()
-				.create(DOWNLOAD_ANTORA_GENERATOR_TASK_NAME, NpmTask.class);
-		downloadAntoraSiteGenerator.setArgs(Arrays.asList(INSTALL, ANTORA_GENERATOR_PACKAGE_NAME));
-
-		Task downloadAntora = project.getTasks()
-				.create(DOWNLOAD_ANTORA_TASK_NAME)
-				.dependsOn(downloadAntoraCli, downloadAntoraSiteGenerator);
-	}
-
-	private void registerDefaultTasks() {
-		project.getTasks().register(DEFAULT_ANTORA_TASK_NAME, AntoraTask.class);
-	}
-
-
-	private void registerAntoraVersionOverrideHandler() {
-		project.afterEvaluate(evaluatedProject -> {
-			if (config().getAntoraVersion().isPresent()) {
-				final String antoraVersion = config().getAntoraVersion().get();
-				project.getTasks()
-						.named(DOWNLOAD_ANTORA_CLI_TASK_NAME, NpmTask.class)
-						.configure(downloadAntoraCli -> {
-							downloadAntoraCli.setArgs(Arrays.asList(INSTALL, ANTORA_CLI_PACKAGE_NAME + "@" + antoraVersion));
-						});
-				project.getTasks()
-						.named(DOWNLOAD_ANTORA_GENERATOR_TASK_NAME, NpmTask.class)
-						.configure(downloadAntoraGenerator -> {
-							downloadAntoraGenerator.setArgs(Arrays.asList(INSTALL, ANTORA_GENERATOR_PACKAGE_NAME + "@" + antoraVersion));
-						});
-			}
+		project.getTasks().register(DEFAULT_ANTORA_TASK_NAME, NpxTask.class, a -> {
+			a.getCommand().set(ANTORA_CLI_PACKAGE_NAME);
+			a.getArgs().set(Arrays.asList( "site.yml"));
+			a.dependsOn(downloadAntoraSiteGenerator);
 		});
-	}
-
-	private String antoraCommand() {
-		String command = "build/modules/node_modules/.bin/antora";
-		return OperatingSystem.current().isWindows() ? command + ".cmd" : command;
 	}
 
 	private Antora config() {

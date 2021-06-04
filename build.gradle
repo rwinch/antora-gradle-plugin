@@ -1,8 +1,7 @@
 plugins {
-	id 'com.gradle.build-scan' version '2.3'
 	id 'java-gradle-plugin'
 	id 'maven-publish'
-	id 'com.gradle.plugin-publish' version '0.10.1'
+	id 'com.gradle.plugin-publish' version '0.15.0'
 }
 
 buildScan {
@@ -21,11 +20,11 @@ repositories {
 }
 
 dependencies {
-	compile gradleApi()
-	compile 'com.github.node-gradle:gradle-node-plugin:1.4.0'
+	implementation gradleApi()
+	implementation 'com.github.node-gradle:gradle-node-plugin:3.0.0'
 
-	testCompile 'com.netflix.nebula:nebula-test:latest.release'
-	testCompile 'junit:junit:4.12'
+	testImplementation 'com.netflix.nebula:nebula-test:latest.release'
+	testImplementation 'junit:junit:4.12'
 }
 
 

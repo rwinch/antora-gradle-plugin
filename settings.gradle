@@ -1,2 +1,6 @@
+plugins {
+	id "com.gradle.enterprise" version "3.6.2"
+}
+
 rootProject.name = 'antora-gradle-plugin'
 
