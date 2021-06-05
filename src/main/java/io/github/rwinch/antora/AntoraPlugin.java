@@ -25,7 +25,9 @@ import org.gradle.api.Project;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,6 +52,7 @@ public class AntoraPlugin implements Plugin<Project> {
 		this.project = project;
 		AntoraExtension antora = project.getExtensions().create("antora", AntoraExtension.class);
 		antora.getPlaybookFile().set(this.project.provider(() -> this.project.file("antora-playbook.yml")));
+		antora.getArguments().convention(Collections.emptyList());
 		project.getPlugins().apply(NodePlugin.class);
 
 		NodeExtension node = NodeExtension.get(project);
@@ -65,7 +68,13 @@ public class AntoraPlugin implements Plugin<Project> {
 		project.getTasks().register(DEFAULT_ANTORA_TASK_NAME, NpxTask.class, a -> {
 			a.getCommand().set(antoraPackage(project, antora));
 			Provider<List<String>> args = antora.getPlaybookFile()
-					.map(file -> Arrays.asList(file.getPath()));
+					.map(file -> {
+						List<String> arguments = new ArrayList<>();
+						String playbookPath = project.relativePath(file);
+						arguments.add(playbookPath);
+						arguments.addAll(antora.getArguments().getOrElse(Collections.emptyList()));
+						return arguments;
+					});
 			a.getArgs().set(args);
 			a.dependsOn(downloadAntoraSiteGenerator);
 		});

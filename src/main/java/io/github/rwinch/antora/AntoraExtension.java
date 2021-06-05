@@ -16,6 +16,7 @@
 
 package io.github.rwinch.antora;
 
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 
 import java.io.File;
@@ -25,4 +26,6 @@ public interface AntoraExtension {
 	Property<String> getAntoraVersion();
 
 	Property<File> getPlaybookFile();
+
+	ListProperty<String> getArguments();
 }

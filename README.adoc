@@ -19,6 +19,22 @@ The next step is to run the antora task:
 ./gradlew antora
 ----
 
+The plugin provides an extension that allows customizations:
+
+.build.gradle
+[source,groovy]
+----
+antora {
+    // default: "antora-playbook.yml"
+    playbookFile = file("local-playbook.yml")
+    // default no version (current version)
+    antoraVersion = "2.3.4"
+    // additional arguments (other than playbookFile) to pass to Antora. Default is emptyList
+    arguments = ["--fetch"]
+}
+----
+
+
 = Snapshots
 
 The plugin does not currently deploy SNAPSHOTs.
@@ -50,11 +66,6 @@ plugins {
 
 For a complete sample refer to https://github.com/rwinch/antora-gradle
 
-= Roadmap
-
-Currently it only installs antora and runs `antora site.yml` with no additional options.
-We plan to provide additional features in future releases.
-If you have a feature request, please create a ticket.
 
 = License
 
