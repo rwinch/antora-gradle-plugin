@@ -22,19 +22,16 @@ import com.github.gradle.node.npm.task.NpmTask;
 import com.github.gradle.node.npm.task.NpxTask;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.Task;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
-import org.gradle.internal.os.OperatingSystem;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Rob Winch
  */
 public class AntoraPlugin implements Plugin<Project> {
-
-	public static final String DOWNLOAD_ANTORA_TASK_NAME = "downloadAntora";
 
 	private static final String DOWNLOAD_ANTORA_GENERATOR_TASK_NAME = "downloadAntoraSiteGenerator";
 
@@ -51,26 +48,38 @@ public class AntoraPlugin implements Plugin<Project> {
 	@Override
 	public void apply(Project project) {
 		this.project = project;
-		project.getExtensions().create(Antora.ID, Antora.class);
+		AntoraExtension antora = project.getExtensions().create("antora", AntoraExtension.class);
+		antora.getPlaybookFile().set(this.project.provider(() -> this.project.file("antora-playbook.yml")));
 		project.getPlugins().apply(NodePlugin.class);
 
 		NodeExtension node = NodeExtension.get(project);
 		node.getDownload().set(true);
-//		node.getVersion().set("12.16.2");
 
 		TaskProvider<NpmTask> downloadAntoraSiteGenerator = project.getTasks()
 			.register(DOWNLOAD_ANTORA_GENERATOR_TASK_NAME, NpmTask.class, npm -> {
-				npm.getArgs().set(Arrays.asList(INSTALL, ANTORA_GENERATOR_PACKAGE_NAME));
+				Provider<List<String>> args = antoraGeneratorPackage(project, antora)
+						.map(antoraGeneratorPackage -> Arrays.asList(INSTALL, antoraGeneratorPackage));
+				npm.getArgs().set(args);
 			});
 
 		project.getTasks().register(DEFAULT_ANTORA_TASK_NAME, NpxTask.class, a -> {
-			a.getCommand().set(ANTORA_CLI_PACKAGE_NAME);
-			a.getArgs().set(Arrays.asList( project.file("antora-playbook.yml").getPath()));
+			a.getCommand().set(antoraPackage(project, antora));
+			Provider<List<String>> args = antora.getPlaybookFile()
+					.map(file -> Arrays.asList(file.getPath()));
+			a.getArgs().set(args);
 			a.dependsOn(downloadAntoraSiteGenerator);
 		});
 	}
 
-	private Antora config() {
-		return (Antora) project.getExtensions().getByName(Antora.ID);
+	private Provider<String> antoraGeneratorPackage(Project project, AntoraExtension antora) {
+		return project.provider(() -> ANTORA_GENERATOR_PACKAGE_NAME + antoraVersion(antora));
+	}
+
+	private Provider<String> antoraPackage(Project project, AntoraExtension antora) {
+		return project.provider(() -> ANTORA_CLI_PACKAGE_NAME + antoraVersion(antora));
+	}
+
+	private String antoraVersion(AntoraExtension antora) {
+		return antora.getAntoraVersion().map(v -> "@" + v).getOrElse("");
 	}
 }

@@ -23,8 +23,9 @@ dependencies {
 	implementation gradleApi()
 	implementation 'com.github.node-gradle:gradle-node-plugin:3.0.0'
 
-	testImplementation 'com.netflix.nebula:nebula-test:latest.release'
-	testImplementation 'junit:junit:4.12'
+	testImplementation platform('org.junit:junit-bom:5.7.2')
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 
@@ -45,3 +46,7 @@ gradlePlugin {
 		}
 	}
 }
+
+tasks.withType(Test).configureEach(t ->
+	t.useJUnitPlatform()
+)

@@ -16,26 +16,13 @@
 
 package io.github.rwinch.antora;
 
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 
-import javax.inject.Inject;
+import java.io.File;
 
-public class Antora {
-	public static final String ID = "antora";
+public interface AntoraExtension {
 
-	private Property<String> antoraVersion;
+	Property<String> getAntoraVersion();
 
-	@Inject
-	public Antora( ObjectFactory objects ) {
-		antoraVersion = objects.property( String.class );
-	}
-
-	public Property<String> getAntoraVersion() {
-		return antoraVersion;
-	}
-
-	public void antoraVersion( String antoraVersion ) {
-		this.antoraVersion.set( antoraVersion );
-	}
+	Property<File> getPlaybookFile();
 }
