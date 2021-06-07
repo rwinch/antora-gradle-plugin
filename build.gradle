@@ -41,7 +41,7 @@ pluginBundle {
 	website = 'https://github.com/rwinch/antora-gradle-plugin'
 	vcsUrl = 'https://github.com/rwinch/antora-gradle-plugin.git'
 	description = project.description
-	tags = ['antora', 'asciidoctor', 'asciidoc']
+	tags = ['antora', 'asciidoctor', 'asciidoc', 'documentation']
 }
 
 gradlePlugin {

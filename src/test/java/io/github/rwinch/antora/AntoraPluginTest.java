@@ -58,11 +58,8 @@ class AntoraPluginTest {
 	@Test
 	void antoraWhenCustomAntoraVersion() throws Exception {
 		File projectDir = tempProjectDirFromResource(projectDirParent, "/custom-antora-version");
-		BuildResult gradle = GradleRunner.create()
-				.forwardOutput()
+		BuildResult gradle = gradleRunner()
 				.withProjectDir(projectDir)
-				.withArguments("antora", "--stacktrace", "--debug")
-				.withPluginClasspath()
 				.build();
 
 		Path packageJson = projectDir.toPath().resolve("node_modules/@antora/asciidoc-loader/package.json");
@@ -74,11 +71,8 @@ class AntoraPluginTest {
 	@MethodSource("gradleVersions")
 	void antoraWhenDefaultsThenSuccess(GradleVersion gradleVersion) throws Exception {
 		File projectDir = tempProjectDirFromResource(projectDirParent, "/demo");
-		BuildResult gradle = GradleRunner.create()
-			.forwardOutput()
+		BuildResult gradle = gradleRunner()
 			.withProjectDir(projectDir)
-				.withArguments("antora", "--stacktrace")
-			.withPluginClasspath()
 			.build();
 
 		assertThat(gradle.task(":antora").getOutcome()).isEqualTo(TaskOutcome.SUCCESS);
@@ -89,15 +83,19 @@ class AntoraPluginTest {
 	@MethodSource("gradleVersions")
 	void antoraWhenCustomPlaybookThenSuccess(GradleVersion gradleVersion) throws Exception {
 		File projectDir = tempProjectDirFromResource(projectDirParent, "/custom-playbook");
-		BuildResult gradle = GradleRunner.create()
-				.forwardOutput()
+		BuildResult gradle = gradleRunner()
 				.withProjectDir(projectDir)
-				.withArguments("antora", "--stacktrace")
-				.withPluginClasspath()
 				.build();
 
 		assertThat(gradle.task(":antora").getOutcome()).isEqualTo(TaskOutcome.SUCCESS);
 		assertThat(projectDir.toPath().resolve("build/site/index.html")).exists();
+	}
+
+	private static GradleRunner gradleRunner() {
+		return GradleRunner.create()
+				.forwardOutput()
+				.withArguments("antora", "--stacktrace")
+				.withPluginClasspath();
 	}
 
 	private static File tempProjectDirFromResource(File testProjectDir, String resourceName) throws IOException, URISyntaxException {

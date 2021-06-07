@@ -52,7 +52,7 @@ public class AntoraPlugin implements Plugin<Project> {
 		this.project = project;
 		AntoraExtension antora = project.getExtensions().create("antora", AntoraExtension.class);
 		antora.getPlaybookFile().set(this.project.provider(() -> this.project.file("antora-playbook.yml")));
-		antora.getArguments().convention(Collections.emptyList());
+		antora.getArguments().convention(Collections.singleton("--stacktrace"));
 		project.getPlugins().apply(NodePlugin.class);
 
 		NodeExtension node = NodeExtension.get(project);
