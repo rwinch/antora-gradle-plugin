@@ -61,7 +61,7 @@ class AntoraPluginTest {
 		BuildResult gradle = GradleRunner.create()
 				.forwardOutput()
 				.withProjectDir(projectDir)
-				.withArguments("antora", "--stacktrace")
+				.withArguments("antora", "--stacktrace", "--debug")
 				.withPluginClasspath()
 				.build();
 
