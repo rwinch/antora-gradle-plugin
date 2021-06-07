@@ -55,6 +55,6 @@ gradlePlugin {
 	}
 }
 
-tasks.withType(Test).configureEach(t ->
-	t.useJUnitPlatform()
-)
+tasks.withType(Test).configureEach {
+	useJUnitPlatform()
+}
