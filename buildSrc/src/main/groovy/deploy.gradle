@@ -1,0 +1,7 @@
+tasks.register('deploy') {
+    group = 'Publishing'
+    description = 'Deploys to the necessary repository based on snapshot or release status'
+    if (!project.version.contains('-SNAPSHOT')) {
+        dependsOn 'publishPlugins'
+    }
+}
