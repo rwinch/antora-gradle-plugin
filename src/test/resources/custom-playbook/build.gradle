@@ -2,6 +2,8 @@ plugins {
     id "io.github.rwinch.antora"
 }
 
+
 antora {
+    antoraVersion = "2.3.4"
     playbookFile = file("playbook.yml")
 }
