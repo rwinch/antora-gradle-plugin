@@ -61,7 +61,7 @@ class AntoraPluginTest {
 		BuildResult gradle = GradleRunner.create()
 				.forwardOutput()
 				.withProjectDir(projectDir)
-				.withArguments("antora")
+				.withArguments("antora", "--stacktrace")
 				.withPluginClasspath()
 				.build();
 
@@ -77,7 +77,7 @@ class AntoraPluginTest {
 		BuildResult gradle = GradleRunner.create()
 			.forwardOutput()
 			.withProjectDir(projectDir)
-			.withArguments("antora")
+				.withArguments("antora", "--stacktrace")
 			.withPluginClasspath()
 			.build();
 
@@ -92,7 +92,7 @@ class AntoraPluginTest {
 		BuildResult gradle = GradleRunner.create()
 				.forwardOutput()
 				.withProjectDir(projectDir)
-				.withArguments("antora")
+				.withArguments("antora", "--stacktrace")
 				.withPluginClasspath()
 				.build();
 
