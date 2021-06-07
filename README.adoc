@@ -1,3 +1,6 @@
+image:https://github.com/rwinch/antora-gradle-plugin/workflows/check/badge.svg?branch=main["build Status", link="https://github.com/rwinch/antora-gradle-plugin/actions?query=workflow%3Acheck"]
+
+
 A very simple Gradle plugin to automatically download and install https://antora.org[Antora], a documentation site generator capable of aggregating content from multiple repositories.
 
 = Usage
