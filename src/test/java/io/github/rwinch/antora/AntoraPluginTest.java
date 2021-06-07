@@ -2,7 +2,6 @@ package io.github.rwinch.antora;
 
 import com.github.gradle.node.npm.task.NpxTask;
 import org.gradle.api.Project;
-import org.gradle.api.provider.ListProperty;
 import org.gradle.internal.impldep.org.testng.annotations.Parameters;
 import org.gradle.testfixtures.ProjectBuilder;
 import org.gradle.testkit.runner.BuildResult;
