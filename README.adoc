@@ -11,7 +11,7 @@ The first step is to apply the Gradle plugin.
 [source,groovy]
 ----
 plugins {
-  id "io.github.rwinch.antora" version "0.0.1"
+  id "io.github.rwinch.antora" version "0.0.2"
 }
 ----
 
@@ -54,7 +54,7 @@ To use the latest snapshot:
 [source,groovy]
 ----
 plugins {
-  id "io.github.rwinch.antora" version "0.0.2-SNAPSHOT"
+  id "io.github.rwinch.antora" version "0.0.3-SNAPSHOT"
 }
 ----
 ** Execute the build as a https://docs.gradle.org/current/userguide/composite_builds.html[composite build].
