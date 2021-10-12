@@ -1,3 +1,6 @@
+WARNING: This project has been promoted to be an offical Antora project and can be found at https://gitlab.com/antora/antora-gradle-plugin
+
+
 image:https://github.com/rwinch/antora-gradle-plugin/workflows/check/badge.svg?branch=main["build Status", link="https://github.com/rwinch/antora-gradle-plugin/actions?query=workflow%3Acheck"]
 
 
